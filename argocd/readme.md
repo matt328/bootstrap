@@ -4,4 +4,4 @@ Run `terraform plan` to preview what it's going to do.
 
 Run `terraform apply` to do the thing.
 
-Check the comments in k8s.tf
+Check the comments in argocd.tf
