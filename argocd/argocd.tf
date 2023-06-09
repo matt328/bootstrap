@@ -26,3 +26,6 @@ module "argocd" {
   source         = "aigisuk/argocd/kubernetes"
   admin_password = var.admin_password
 }
+
+# terraform destroy doens't work because I don't know why yet, but you can delete the argo namespace with --force
+# to clean everything up.
