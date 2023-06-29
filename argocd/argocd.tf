@@ -11,12 +11,16 @@ provider "kustomization" {
   kubeconfig_path = "~/.kube/neon-config"
 }
 
-data "kustomization" "current" {
-  path = "k8s"
-}
+// https://www.kubestack.com/guides/catalog-using-kubestack-catalog-modules-standalone/
+module "argocd_install" {
+  source  = "kbst.xyz/catalog/argo-cd"
+  version = "v2.6.2-kbst.0"
 
-resource "kustomization_resource" "current" {
-  for_each = data.kustomization.current.ids
+  configuration = {
+    apps = {}
+    ops = {
+      variant = "normal"
+    }
+  }
 
-  manifest = data.kustomization.current.manifests[each.value]
 }
