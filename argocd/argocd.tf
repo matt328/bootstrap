@@ -11,16 +11,23 @@ provider "kustomization" {
   kubeconfig_path = "~/.kube/neon-config"
 }
 
-// https://www.kubestack.com/guides/catalog-using-kubestack-catalog-modules-standalone/
 module "argocd_install" {
-  source  = "kbst.xyz/catalog/argo-cd"
-  version = "v2.6.2-kbst.0"
+  source  = "kbst.xyz/catalog/argo-cd/kustomization"
+  version = "v2.6.7-kbst.0"
+
+  configuration_base_key = "default"
 
   configuration = {
-    apps = {}
-    ops = {
+    default = {
+      config_map_generator = [{
+        name = "argocd-cmd-params-cm"
+        namespace = "argocd"
+        behavior = "merge"
+        literals = [
+          "server.insecure=true"
+        ]
+      }]
       variant = "normal"
     }
   }
-
 }
