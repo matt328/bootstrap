@@ -5,8 +5,9 @@ namespace: argocd
 
 resources:
   - namespace.yaml
-  - github.com/argoproj/argo-cd/manifests/base?ref=v2.7.6
+  - github.com/argoproj/argo-cd/manifests/cluster-install?ref=v2.7.6
   - traefik-ingress.yaml
+  - secret.yaml
 
-patchesStrategicMerge:
-  - overlays/cmd-params-cm.yaml
+patches:
+  - path: overlays/cmd-params-cm.yaml
