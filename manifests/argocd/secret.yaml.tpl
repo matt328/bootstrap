@@ -5,6 +5,8 @@ metadata:
   namespace: argocd
   labels:
     argocd.argoproj.io/secret-type: repository
+  annotations:
+    sealedsecrets.bitnami.com/managed: "true"
 stringData:
   type: git
   url: git@github.com:matt328/bootstrap
