@@ -1,0 +1,165 @@
+// Logs
+
+discovery.kubernetes "all_pods" {
+  role = "pod"
+}
+
+discovery.relabel "all_pods" {
+  targets = discovery.kubernetes.all_pods.targets
+  rule {
+    source_labels = ["__meta_kubernetes_namespace"]
+    target_label = "namespace"
+  }
+  rule {
+    source_labels = ["__meta_kubernetes_pod_name"]
+    target_label = "pod"
+  }
+  rule {
+    source_labels = ["__meta_kubernetes_pod_container_name"]
+    target_label = "container"
+  }
+  rule {
+    source_labels = ["__meta_kubernetes_pod_controller_name"]
+    target_label = "controller"
+  }
+}
+
+loki.source.kubernetes "all_pods" {
+  targets = discovery.relabel.all_pods.output
+  forward_to = [loki.process.all_pods.receiver]
+}
+
+loki.process "all_pods" {
+  forward_to = [loki.write.loki.receiver]
+
+  stage.cri {}
+}
+
+loki.source.journal "read" {
+  forward_to = [loki.relabel.journal.receiver]
+}
+
+loki.relabel "journal" {
+  forward_to = [loki.write.loki.receiver]
+  rule {
+    source_labels = ["__journal__systemd_unit"]
+    target_label = "unit"
+  }
+}
+
+loki.source.kubernetes_events "events" {
+  forward_to = [loki.write.loki.receiver]
+}
+
+loki.write "loki" {
+  external_labels = {
+    cluster = "loutretel",
+  }
+  endpoint {
+    url = "http://loki-gateway/loki/api/v1/push"
+  }
+}
+
+
+// Metrics
+
+discovery.kubernetes "all_nodes" {
+  role = "node"
+}
+
+discovery.relabel "all_nodes" {
+  targets = discovery.kubernetes.all_nodes.targets
+  rule {
+    source_labels = ["__meta_kubernetes_node_name"]
+    target_label = "node"
+  }
+}
+
+prometheus.scrape "cadvisor" {
+  targets = discovery.relabel.all_nodes.output
+  forward_to = [prometheus.remote_write.mimir.receiver]
+
+  scrape_interval = "15s"
+  metrics_path = "/metrics/cadvisor"
+  scheme = "https"
+
+  bearer_token_file = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+  tls_config {
+    ca_file = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+  }
+}
+
+prometheus.scrape "kubelet" {
+  targets = discovery.relabel.all_nodes.output
+  forward_to = [prometheus.remote_write.mimir.receiver]
+
+  scrape_interval = "15s"
+  metrics_path = "/metrics"
+  scheme = "https"
+
+  bearer_token_file = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+  tls_config {
+    ca_file = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+  }
+}
+
+prometheus.exporter.unix {
+  procfs_path = "/host/proc"
+  sysfs_path = "/host/sys"
+  rootfs_path = "/host/root"
+}
+
+
+prometheus.scrape "node_exporter" {
+  targets = prometheus.exporter.unix.targets
+  forward_to = [prometheus.relabel.node_exporter.receiver]
+
+  job_name = "node-exporter"
+  scrape_interval = "15s"
+}
+
+prometheus.relabel "node_exporter" {
+  forward_to = [prometheus.remote_write.mimir.receiver]
+
+  rule {
+    replacement = env("HOSTNAME")
+    target_label = "nodename"
+  }
+
+  rule {
+    replacement = "node-exporter"
+    target_label = "job"
+  }
+}
+
+
+discovery.kubernetes "all_services" {
+  role = "service"
+}
+
+discovery.relabel "kube_state_metrics" {
+  targets = discovery.kubernetes.all_services.targets
+
+  rule {
+    action = "keep"
+    source_labels = ["__meta_kubernetes_service_name"]
+    regex = "kube-state-metrics"
+  }
+}
+
+prometheus.scrape "kube_state_metrics" {
+  targets = discovery.relabel.kube_state_metrics.output
+  forward_to = [prometheus.remote_write.mimir.receiver]
+
+  scrape_interval = "15s"
+}
+
+
+prometheus.remote_write "mimir" {
+  external_labels = {
+    cluster = "loutretel",
+  }
+  endpoint {
+    url = "http://mimir-nginx/api/v1/push"
+  }
+}
