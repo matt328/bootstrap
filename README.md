@@ -10,6 +10,11 @@
     ```sh
     kubeseal --format yaml <manifests/argocd/secret.yaml >secret.yaml
     ```
+    or
+    
+    ```powershell
+    Get-Content .\secret.yaml | kubeseal --format yaml >.\lgtm\secret-grafana.yaml
+    ```
 3. Install argo manually
     - Copy `secret.yaml` into `./manifests/argocd/.`
     - Apply the kustomized manifests:

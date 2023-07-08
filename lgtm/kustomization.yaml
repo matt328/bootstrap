@@ -41,7 +41,8 @@ helmCharts:
 
 resources:
   - namespace.yaml
-  - sealed-secret-grafana2.yaml
+  - ingress-route.yaml
+  - secret.yaml
 configMapGenerator:
   - name: grafana-agent
     files:
