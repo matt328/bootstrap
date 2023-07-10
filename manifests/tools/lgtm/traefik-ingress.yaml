@@ -1,0 +1,24 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`grafana.k8s.local`)
+      priority: 10
+      services:
+        - name: grafana
+          port: 80
+    - kind: Rule
+      match: Host(`grafana.k8s.local`) && Headers(`Content-Type`, `application/grpc`)
+      priority: 11
+      services:
+        - name: grafana
+          port: 80
+          scheme: h2c
+  tls:
+    certResolver: default

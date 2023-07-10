@@ -1,0 +1,13 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: lgtm-stack
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:matt328/bootstrap
+    targetRevision: HEAD
+    path: manifests/tools/lgtm
+  destination:
+    server: https://kubernetes.default.svc
