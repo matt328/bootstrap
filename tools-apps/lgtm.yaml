@@ -9,5 +9,7 @@ spec:
     repoURL: git@github.com:matt328/bootstrap
     targetRevision: HEAD
     path: manifests/tools/lgtm
+    plugin:
+      name: kustomize-enable-helm
   destination:
     server: https://kubernetes.default.svc
