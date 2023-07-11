@@ -12,3 +12,33 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: tools
+  namespace: argocd
+spec:
+  sourceRepos:
+    - "*"
+  destinations:
+    - namespace: "tools"
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: monitoring
+  namespace: argocd
+spec:
+  sourceRepos:
+    - "*"
+  destinations:
+    - namespace: "monitoring"
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
