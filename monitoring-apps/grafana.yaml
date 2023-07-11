@@ -12,7 +12,7 @@ spec:
       helm:
         releaseName: grafana
         valueFiles:
-          - $values/manifests/monitoring/grafana-values.yaml
+          - $values/manifests/monitoring/values/grafana-values.yaml
     - repoURL: https://github.com/matt328/bootstrap
       targetRevision: HEAD
       ref: values
