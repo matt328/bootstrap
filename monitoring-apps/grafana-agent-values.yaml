@@ -1,8 +1,8 @@
 agent:
   configMap:
-    create: false
+    create: true
     name: grafana-agent
-    key: config.river
+    key: fow-config.river
   mounts:
     varlog: true
     dockercontainers: true

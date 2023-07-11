@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: grafana
+  namespace: argocd
+spec:
+  project: monitoring
+  source:
+    chart: grafana
+    repoURL: https://grafana.github.io/helm-charts
+    targetRevision: 6.56.2
+    helm:
+      releaseName: grafana
+      valueFiles:
+        - grafana-values.yaml
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true
