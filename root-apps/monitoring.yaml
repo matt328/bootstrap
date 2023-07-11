@@ -7,10 +7,10 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  source:
-    repoURL: git@github.com:matt328/bootstrap
-    targetRevision: HEAD
-    path: monitoring-apps
+  sources:
+    - repoURL: git@github.com:matt328/bootstrap
+      targetRevision: HEAD
+      path: monitoring-apps
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
