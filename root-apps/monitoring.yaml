@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: monitoring-tools
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: git@github.com:matt328/bootstrap
+        revision: kustomize
+        directories:
+          - path: manifests/monitoring/*
+  template:
+    metadata:
+      name: "{{path.basename}}"
+    spec:
+      project: "monitoring"
+      source:
+        repoURL: git@github.com:matt328/bootstrap
+        targetRevision: kustomize
+        path: "{{path}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "monitoring"
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+          - FailOnSharedResource=true

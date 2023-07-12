@@ -1,0 +1,16 @@
+namespace: monitoring
+helmCharts:
+  - name: grafana-agent
+    version: 0.13.0
+    repo: https://grafana.github.io/helm-charts
+    releaseName: grafana-agent
+    namespace: monitoring
+    includeCRDs: true
+    valuesFile: grafana-agent-values.yaml
+
+configMapGenerator:
+  - name: grafana-agent
+    files:
+      - config.river
+    options:
+      disableNameSuffixHash: true
