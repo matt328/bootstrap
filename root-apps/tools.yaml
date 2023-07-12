@@ -1,16 +1,30 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
-  name: tools-root
+  name: tools
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
-  project: default
-  source:
-    repoURL: git@github.com:matt328/bootstrap
-    targetRevision: HEAD
-    path: tools-apps
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: argocd
+  generators:
+    - git:
+        repoURL: git@github.com:matt328/bootstrap
+        revision: kustomize
+        directories:
+          - path: manifests/tools/*
+  template:
+    metadata:
+      name: "{{path.basename}}"
+    spec:
+      project: "tools"
+      source:
+        repoURL: git@github.com:matt328/bootstrap
+        targetRevision: kustomize
+        path: "{{path}}"
+        plugin:
+          name: kustomize-enable-helm
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "tools"
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+          - FailOnSharedResource=true
