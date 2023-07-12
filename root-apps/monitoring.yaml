@@ -18,7 +18,7 @@ spec:
       sources:
         - repoURL: https://grafana.github.io/helm-charts
           chart: "{{path.basename}}"
-          targetRevision: "{{config.chartVersion}}"
+          targetRevision: "{{chartVersion}}"
           helm:
             releaseName: "{{path.basename}}"
             valueFiles:
