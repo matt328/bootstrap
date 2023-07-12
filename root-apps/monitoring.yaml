@@ -26,6 +26,8 @@ spec:
         - repoURL: https://github.com/matt328/bootstrap
           targetRevision: HEAD
           ref: values
+          files:
+            - path: "manifests/monitoring/config.json"
       syncPolicy:
         automated: {}
         syncOptions:
