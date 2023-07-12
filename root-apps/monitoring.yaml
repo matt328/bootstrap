@@ -1,17 +1,35 @@
 apiVersion: argoproj.io/v1alpha1
-kind: Application
+kind: ApplicationSet
 metadata:
   name: monitoring-root
   namespace: argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
-  project: default
-  sources:
-    - repoURL: git@github.com:matt328/bootstrap
-      targetRevision: HEAD
-      path: monitoring-apps
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: monitoring
-# TODO: make this an ApplicationSet
+  generators:
+    - git:
+        repoURL: git@github.com:matt328/bootstrap
+        revision: main
+        directories:
+          - path: monitoring-apps/*
+  template:
+    metadata:
+      name: "{{path.basename}}"
+    spec:
+      project: monitoring
+      sources:
+        - repoURL: https://grafana.github.io/helm-charts
+          chart: "{{path.basename}}"
+          helm:
+            releaseName: "{{path.basename}}"
+            valueFiles:
+              - $values/manifests/monitoring/values/{{path.basename}}.yaml
+        - repoURL: https://github.com/matt328/bootstrap
+          targetRevision: HEAD
+          ref: values
+      syncPolicy:
+        automated: {}
+        syncOptions:
+          - CreateNamespace=true
+          - FailOnSharedResource=true
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "monitoring"
