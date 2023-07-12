@@ -3,3 +3,4 @@ helmCharts:
     version: 2.10.0
     repo: https://bitnami-labs.github.io/sealed-secrets
     releaseName: sealed-secrets
+    namespace: tools
