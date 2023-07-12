@@ -13,4 +13,4 @@ spec:
     path: tools-apps
   destination:
     server: https://kubernetes.default.svc
-    namespace: tools
+    namespace: argocd
