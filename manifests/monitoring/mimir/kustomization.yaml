@@ -1,7 +1,7 @@
 namespace: monitoring
 helmCharts:
   - name: mimir-distributed
-    version: 4.4.1
+    version: 5.0.0
     repo: https://grafana.github.io/helm-charts
     releaseName: mimir
     namespace: monitoring

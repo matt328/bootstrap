@@ -6,3 +6,4 @@ helmCharts:
     releaseName: tempo-distributed
     namespace: monitoring
     valuesFile: tempo-values.yaml
+    includeCRDs: true
