@@ -77,7 +77,7 @@ discovery.relabel "all_nodes" {
 
 prometheus.scrape "cadvisor" {
   clustering {
-    enabled: true
+    enabled = true
   }
 
   targets = discovery.relabel.all_nodes.output
@@ -96,7 +96,7 @@ prometheus.scrape "cadvisor" {
 
 prometheus.scrape "kubelet" {
   clustering {
-    enabled: true
+    enabled = true
   }
 
   targets = discovery.relabel.all_nodes.output
@@ -121,7 +121,7 @@ prometheus.exporter.unix {
 
 prometheus.scrape "node_exporter" {
   clustering {
-    enabled: true
+    enabled = true
   }
 
   targets = prometheus.exporter.unix.targets
@@ -162,7 +162,7 @@ discovery.relabel "kube_state_metrics" {
 
 prometheus.scrape "kube_state_metrics" {
   clustering {
-    enabled: true
+    enabled = true
   }
 
   targets = discovery.relabel.kube_state_metrics.output
