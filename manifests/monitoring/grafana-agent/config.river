@@ -86,7 +86,6 @@ prometheus.scrape "cadvisor" {
   scrape_interval = "30s"
   metrics_path = "/metrics/cadvisor"
   scheme = "https"
-  honor_timestamps = "true"
 
   bearer_token_file = "/var/run/secrets/kubernetes.io/serviceaccount/token"
   tls_config {
