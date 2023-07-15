@@ -53,7 +53,7 @@ loki.source.kubernetes_events "events" {
 
 loki.write "loki" {
   external_labels = {
-    cluster = "loutretel",
+    cluster = "steepdepot",
   }
   endpoint {
     url = "http://loki-gateway/loki/api/v1/push"
@@ -76,12 +76,17 @@ discovery.relabel "all_nodes" {
 }
 
 prometheus.scrape "cadvisor" {
+  clustering {
+    enabled: true
+  }
+
   targets = discovery.relabel.all_nodes.output
   forward_to = [prometheus.remote_write.mimir.receiver]
 
-  scrape_interval = "15s"
+  scrape_interval = "30s"
   metrics_path = "/metrics/cadvisor"
   scheme = "https"
+  honor_timestamps = "true"
 
   bearer_token_file = "/var/run/secrets/kubernetes.io/serviceaccount/token"
   tls_config {
@@ -90,10 +95,14 @@ prometheus.scrape "cadvisor" {
 }
 
 prometheus.scrape "kubelet" {
+  clustering {
+    enabled: true
+  }
+
   targets = discovery.relabel.all_nodes.output
   forward_to = [prometheus.remote_write.mimir.receiver]
 
-  scrape_interval = "15s"
+  scrape_interval = "30s"
   metrics_path = "/metrics"
   scheme = "https"
 
@@ -111,11 +120,15 @@ prometheus.exporter.unix {
 
 
 prometheus.scrape "node_exporter" {
+  clustering {
+    enabled: true
+  }
+
   targets = prometheus.exporter.unix.targets
   forward_to = [prometheus.relabel.node_exporter.receiver]
 
   job_name = "node-exporter"
-  scrape_interval = "15s"
+  scrape_interval = "30s"
 }
 
 prometheus.relabel "node_exporter" {
@@ -148,16 +161,20 @@ discovery.relabel "kube_state_metrics" {
 }
 
 prometheus.scrape "kube_state_metrics" {
+  clustering {
+    enabled: true
+  }
+
   targets = discovery.relabel.kube_state_metrics.output
   forward_to = [prometheus.remote_write.mimir.receiver]
 
-  scrape_interval = "15s"
+  scrape_interval = "30s"
 }
 
 
 prometheus.remote_write "mimir" {
   external_labels = {
-    cluster = "loutretel",
+    cluster = "steepdepot",
   }
   endpoint {
     url = "http://mimir-nginx/api/v1/push"
