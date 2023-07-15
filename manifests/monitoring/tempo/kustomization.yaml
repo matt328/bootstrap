@@ -7,3 +7,10 @@ helmCharts:
     namespace: monitoring
     valuesFile: tempo-values.yaml
     includeCRDs: true
+patches:
+  - target:
+      kind: PodDisruptionBudget
+    patch: |
+      - op: replace
+        path: /apiVersion
+        value: policy/v1
