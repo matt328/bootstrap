@@ -1,4 +1,6 @@
 agent:
+  clustering:
+    enabled: true
   configMap:
     create: false
     name: grafana-agent
@@ -14,6 +16,9 @@ agent:
       - mountPath: /host/proc
         name: procfs
 controller:
+  type: statefulset
+  enableStatefulSetAutoDeletePVC: true
+  replicas: 3
   volumes:
     extra:
       - hostPath:
@@ -25,3 +30,5 @@ controller:
       - hostPath:
           path: /proc
         name: procfs
+ingress:
+  enabled: true
