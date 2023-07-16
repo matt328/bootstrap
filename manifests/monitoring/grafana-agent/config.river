@@ -159,6 +159,27 @@ discovery.relabel "kube_state_metrics" {
   }
 }
 
+discovery.relabel "grafana-agents" {
+  targets = discovery.kubernetes.all_services.targets
+
+  rule {
+    action = "keep"
+    source_labels = ["__meta_kubernetes_service_name"]
+    regex = "grafana-agent"
+  }
+}
+
+prometheus.scrape "grafana-agent" {
+  clustering {
+    enabled = true
+  }
+
+  targets = discovery.relabel.grafana-agents.output
+  forward_to = [prometheus.remote_write.mimir.receiver]
+
+  scrape_interval = "1m"
+}
+
 prometheus.scrape "kube_state_metrics" {
   clustering {
     enabled = true
