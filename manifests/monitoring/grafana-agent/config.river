@@ -159,7 +159,7 @@ discovery.relabel "kube_state_metrics" {
   }
 }
 
-discovery.relabel "grafana-agents" {
+discovery.relabel "grafana_agents" {
   targets = discovery.kubernetes.all_services.targets
 
   rule {
@@ -169,12 +169,12 @@ discovery.relabel "grafana-agents" {
   }
 }
 
-prometheus.scrape "grafana-agent" {
+prometheus.scrape "grafana_agent" {
   clustering {
     enabled = true
   }
 
-  targets = discovery.relabel.grafana-agents.output
+  targets = discovery.relabel.grafana_agents.output
   forward_to = [prometheus.remote_write.mimir.receiver]
 
   scrape_interval = "1m"
