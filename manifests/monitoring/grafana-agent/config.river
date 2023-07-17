@@ -83,7 +83,7 @@ prometheus.scrape "cadvisor" {
   targets = discovery.relabel.all_nodes.output
   forward_to = [prometheus.remote_write.mimir.receiver]
 
-  scrape_interval = "1m"
+  scrape_interval = "2m"
   metrics_path = "/metrics/cadvisor"
   scheme = "https"
 
@@ -101,7 +101,7 @@ prometheus.scrape "kubelet" {
   targets = discovery.relabel.all_nodes.output
   forward_to = [prometheus.remote_write.mimir.receiver]
 
-  scrape_interval = "1m"
+  scrape_interval = "2m"
   metrics_path = "/metrics"
   scheme = "https"
 
@@ -127,7 +127,7 @@ prometheus.scrape "node_exporter" {
   forward_to = [prometheus.relabel.node_exporter.receiver]
 
   job_name = "node-exporter"
-  scrape_interval = "1m"
+  scrape_interval = "2m"
 }
 
 prometheus.relabel "node_exporter" {
@@ -177,7 +177,7 @@ prometheus.scrape "grafana_agent" {
   targets = discovery.relabel.grafana_agents.output
   forward_to = [prometheus.remote_write.mimir.receiver]
 
-  scrape_interval = "1m"
+  scrape_interval = "2m"
 }
 
 prometheus.scrape "kube_state_metrics" {
@@ -188,7 +188,7 @@ prometheus.scrape "kube_state_metrics" {
   targets = discovery.relabel.kube_state_metrics.output
   forward_to = [prometheus.remote_write.mimir.receiver]
 
-  scrape_interval = "1m"
+  scrape_interval = "2m"
 }
 
 
