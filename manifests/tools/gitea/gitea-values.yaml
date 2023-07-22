@@ -1,0 +1,26 @@
+service:
+  http:
+    type: ClusterIP
+    port: 3000
+    clusterIP:
+  ssh:
+    type: ClusterIP
+    port: 22
+    clusterIP:
+
+ingress:
+  hosts:
+    - host: git.k8s.local
+  tls:
+    hosts:
+      - host: git.k8s.local
+gitea:
+  admin:
+    email: admin@k8s.local
+    existingSecret: gitea-admin-account
+  config:
+    server:
+      SSH_DOMAIN: git.k8s.local
+    service:
+      DISABLE_REGISTRATION: true
+      SHOW_REGISTRATION_BUTTON: false

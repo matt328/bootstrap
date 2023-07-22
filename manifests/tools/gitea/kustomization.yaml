@@ -1,0 +1,12 @@
+namespace: tools
+helmCharts:
+  - name: gitea
+    version: 9.0.3
+    repo: https://dl.gitea.io/charts/
+    releaseName: gitea
+    namespace: tools
+    valuesFile: gitea-values.yaml
+
+resources:
+  - ingress.yaml
+  - sealed-secret.yaml

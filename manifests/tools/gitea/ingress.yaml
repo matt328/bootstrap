@@ -1,0 +1,23 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: gitea
+  namespace: tools
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: Host(`git.k8s.local`)
+      priority: 10
+      services:
+        - name: gitea-http
+          port: 3000
+    - kind: Rule
+      match: Host(`git.k8s.local`)
+      priority: 11
+      services:
+        - name: gitea-ssh
+          port: 2222
+  tls:
+    certResolver: default
