@@ -1,26 +1,28 @@
-service:
-  http:
-    type: ClusterIP
-    port: 3000
-    clusterIP:
-  ssh:
-    type: ClusterIP
-    port: 22
-    clusterIP:
+redis-cluster:
+  enabled: false
+postgresql:
+  enabled: true
+postgresql-ha:
+  enabled: false
 
-ingress:
-  hosts:
-    - host: git.k8s.local
-  tls:
-    hosts:
-      - host: git.k8s.local
+persistence:
+  enabled: false
+
 gitea:
-  admin:
-    email: admin@k8s.local
-    existingSecret: gitea-admin-account
   config:
     server:
-      SSH_DOMAIN: git.k8s.local
-    service:
-      DISABLE_REGISTRATION: true
-      SHOW_REGISTRATION_BUTTON: false
+      ROOT_URL: http://gitea.home
+      DOMAIN: gitea.home
+      PROTOCOL: http
+    database:
+      DB_TYPE: postgres
+      HOST: gitea-postgresql
+      NAME: gitea
+      USER: gitea
+      PASSWD: gitea
+    session:
+      PROVIDER: memory
+    cache:
+      ADAPTER: memory
+    queue:
+      TYPE: level

@@ -8,5 +8,5 @@ helmCharts:
     valuesFile: gitea-values.yaml
 
 resources:
-  - ingress.yaml
-  - sealed-secret.yaml
+  - namespace.yaml
+  - loadbalancer.yaml
