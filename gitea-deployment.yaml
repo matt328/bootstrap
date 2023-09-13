@@ -328,6 +328,22 @@ spec:
     app.kubernetes.io/name: gitea
   type: ClusterIP
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    helm.sh/resource-policy: keep
+  name: gitea-shared-storage
+  namespace: tools
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: longhorn
+  volumeMode: Filesystem
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -522,8 +538,9 @@ spec:
           secretName: gitea-inline-config
       - emptyDir: {}
         name: temp
-      - emptyDir: {}
-        name: data
+      - name: data
+        persistentVolumeClaim:
+          claimName: gitea-shared-storage
 ---
 apiVersion: apps/v1
 kind: StatefulSet
