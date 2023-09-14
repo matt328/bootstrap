@@ -1,13 +1,15 @@
 redis-cluster:
   enabled: false
 postgresql:
-  enabled: true
+  enabled: false
 postgresql-ha:
   enabled: false
 
 persistence:
   enabled: true
-  storageClass: longhorn
+  claimName: gitea-data-claim
+  volumeName: gitea-data-volume
+  create: false
 
 gitea:
   config:
@@ -17,7 +19,7 @@ gitea:
       PROTOCOL: http
     database:
       DB_TYPE: postgres
-      HOST: gitea-postgresql
+      HOST: postgres
       NAME: gitea
       USER: gitea
       PASSWD: gitea

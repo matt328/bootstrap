@@ -10,3 +10,6 @@ helmCharts:
 resources:
   - namespace.yaml
   - loadbalancer.yaml
+
+components:
+  - ./postgres
