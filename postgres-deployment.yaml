@@ -26,7 +26,7 @@ spec:
   - port: 5432
     protocol: TCP
   selector:
-    app: postgress
+    app: postgres
 ---
 apiVersion: apps/v1
 kind: Deployment

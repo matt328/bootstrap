@@ -30,21 +30,21 @@ spec:
         version: 1.20-nightly
     spec:
       containers:
-      - image: gitea/gitea:1.20-nightly-rootless
-        imagePullPolicy: Always
-        name: gitea
-        ports:
-        - containerPort: 2222
-          name: ssh
-        - containerPort: 3000
-          name: http
-        volumeMounts:
-        - mountPath: /data
-          name: data
+        - image: gitea/gitea:1.20-nightly-rootless
+          imagePullPolicy: Always
+          name: gitea
+          ports:
+            - containerPort: 2222
+              name: ssh
+            - containerPort: 3000
+              name: http
+          volumeMounts:
+            - mountPath: /data
+              name: data
       securityContext:
         fsGroup: 1000
       terminationGracePeriodSeconds: 60
       volumes:
-      - name: data
-        persistentVolumeClaim:
-          claimName: gitea-data-claim
+        - name: data
+          persistentVolumeClaim:
+            claimName: gitea-data-claim
