@@ -38,9 +38,20 @@ spec:
           name: ssh
         - containerPort: 3000
           name: http
+        resources:
+          limits:
+            cpu: "2.0"
+            memory: 2Gi
+          requests:
+            cpu: "1.0"
+            memory: 512Mi
         volumeMounts:
-        - mountPath: /data
+        - mountPath: /etc/gitea
           name: data
+          subPath: config
+        - mountPath: /var/lib/gitea
+          name: data
+          subPath: data
       securityContext:
         fsGroup: 1000
       terminationGracePeriodSeconds: 60

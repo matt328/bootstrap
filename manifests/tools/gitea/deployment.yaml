@@ -39,8 +39,19 @@ spec:
             - containerPort: 3000
               name: http
           volumeMounts:
-            - mountPath: /data
+            - mountPath: /etc/gitea
+              subPath: config
               name: data
+            - mountPath: /var/lib/gitea
+              name: data
+              subPath: data
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "1.0"
+            limits:
+              memory: "2Gi"
+              cpu: "2.0"
       securityContext:
         fsGroup: 1000
       terminationGracePeriodSeconds: 60
