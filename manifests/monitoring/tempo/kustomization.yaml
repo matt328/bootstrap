@@ -1,0 +1,16 @@
+namespace: monitoring
+helmCharts:
+  - name: tempo-distributed
+    version: 1.4.8
+    repo: https://grafana.github.io/helm-charts
+    releaseName: tempo-distributed
+    namespace: monitoring
+    valuesFile: tempo-values.yaml
+    includeCRDs: true
+patches:
+  - target:
+      kind: PodDisruptionBudget
+    patch: |
+      - op: replace
+        path: /apiVersion
+        value: policy/v1

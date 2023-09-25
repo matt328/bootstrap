@@ -1,38 +1,30 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: monitoring-root
+  name: monitoring-tools
   namespace: argocd
 spec:
   generators:
     - git:
         repoURL: git@github.com:matt328/bootstrap
-        revision: main
+        revision: kustomize
         directories:
-          - path: monitoring-apps/*
-        files:
-          - path: monitoring-apps/config.json"
+          - path: manifests/monitoring/*
   template:
     metadata:
       name: "{{path.basename}}"
     spec:
-      project: monitoring
-      sources:
-        - repoURL: https://grafana.github.io/helm-charts
-          chart: "{{path.basename}}"
-          targetRevision: "{{chartVersion}}"
-          helm:
-            releaseName: "{{path.basename}}"
-            valueFiles:
-              - $values/manifests/monitoring/values/{{path.basename}}.yaml
-        - repoURL: https://github.com/matt328/bootstrap
-          targetRevision: HEAD
-          ref: values
-      syncPolicy:
-        automated: {}
-        syncOptions:
-          - CreateNamespace=true
-          - FailOnSharedResource=true
+      project: "monitoring"
+      source:
+        repoURL: git@github.com:matt328/bootstrap
+        targetRevision: kustomize
+        path: "{{path}}"
+        plugin:
+          name: kustomize-enable-helm
       destination:
         server: https://kubernetes.default.svc
         namespace: "monitoring"
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+          - FailOnSharedResource=true

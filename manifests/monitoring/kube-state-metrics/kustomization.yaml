@@ -1,0 +1,11 @@
+namespace: monitoring
+helmCharts:
+  - name: kube-state-metrics
+    version: 5.6.1
+    repo: https://prometheus-community.github.io/helm-charts
+    releaseName: kube-state-metrics
+    namespace: monitoring
+    valuesInline:
+      prometheusScrape: false
+      selfMonitor:
+        enabled: true

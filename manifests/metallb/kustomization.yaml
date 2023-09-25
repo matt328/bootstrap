@@ -1,0 +1,5 @@
+# This kustomization will create the namespace for us. How about that, helm.
+namespace: metallb-system
+
+resources:
+  - https://github.com/metallb/metallb/config/native?ref=v0.13.11
