@@ -1,6 +1,2 @@
-helmCharts:
-  - name: sealed-secrets
-    version: 2.10.0
-    repo: https://bitnami-labs.github.io/sealed-secrets
-    releaseName: sealed-secrets
-    namespace: tools
+resources:
+  - https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.24.0/controller.yaml

@@ -12,3 +12,8 @@ resources:
 patches:
   - path: overlays/cmd-params-cm.yaml
   - path: overlays/argocd-cm.yaml
+  - target:
+      name: argocd-server
+      version: v1
+      kind: Service
+    path: ./overlays/metallb.yaml

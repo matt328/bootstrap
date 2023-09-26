@@ -47,19 +47,6 @@ and devops topics in general. The tools and technologies used include:
    kubectl label nodes <node-name> node-type=worker
    ```
 
-## ArgoCD Bootstrap
-
-This configuration is inspired by the ArgoCD docs themselves, particularly
-
-- https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#manage-argo-cd-using-argo-cd
-- https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/
-
-The `tools` group uses an ApplicationSet:
-
-- https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/
-
-The overall idea is to have everything that runs in kubernetes declaratively managed by ArgoCD, including ArgoCD itself, which presents a chicken and the egg situation: How does ArgoCD get installed in the first place? The `Break Glass` steps above illustrate step by step how to bootstrap a cluster, but the general idea is you have to install a few items manually, via `kubectl apply`, and once those are in place, you add their manifest directories as Projects inside of ArgoCD, and it will start to monitor them from there. From then on, to modify or update any of those applications and configurations, you simply push changes to the repository, and ArgoCD will sync them to the cluster. ArgoCD will deploy applications via the same mechanism, although to make roles and permissions management easier, applications developers deploy would be stored in a separate repository from the kubernetes infrastructure applications and configuration.
-
 ## MetalLB
 
 1. Use kustomize to generate deployment yaml
@@ -81,7 +68,18 @@ kubectl kustomize --enable-helm manifests/tools/sealed-secrets > sealed-secrets-
 kubectl apply -f sealed-secrets-deployment.yaml
 ```
 
-## ArgoCD
+## ArgoCD Bootstrap
+
+This configuration is inspired by the ArgoCD docs themselves, particularly
+
+- https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#manage-argo-cd-using-argo-cd
+- https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/
+
+The `tools` group uses an ApplicationSet:
+
+- https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/
+
+The overall idea is to have everything that runs in kubernetes declaratively managed by ArgoCD, including ArgoCD itself, which presents a chicken and the egg situation: How does ArgoCD get installed in the first place? The `Break Glass` steps above illustrate step by step how to bootstrap a cluster, but the general idea is you have to install a few items manually, via `kubectl apply`, and once those are in place, you add their manifest directories as Projects inside of ArgoCD, and it will start to monitor them from there. From then on, to modify or update any of those applications and configurations, you simply push changes to the repository, and ArgoCD will sync them to the cluster. ArgoCD will deploy applications via the same mechanism, although to make roles and permissions management easier, applications developers deploy would be stored in a separate repository from the kubernetes infrastructure applications and configuration.
 
 1. Create and seal the argo repo secret
 
