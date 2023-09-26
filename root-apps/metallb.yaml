@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: http://github.com/matt328/bootstrap
+    repoURL: https://github.com/matt328/bootstrap
     targetRevision: main
     path: manifests/metallb
   destination:
