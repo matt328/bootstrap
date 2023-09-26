@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb
+  namespace: metallb-system
+spec:
+  project: default
+  source:
+    repoURL: http://github.com/matt328/bootstrap
+    targetRevision: main
+    path: manifests/metallb
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: metallb-system

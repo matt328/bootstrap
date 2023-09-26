@@ -6,8 +6,8 @@ metadata:
 spec:
   generators:
     - git:
-        repoURL: git@github.com:matt328/bootstrap
-        revision: kustomize
+        repoURL: https://github.com/matt328/bootstrap
+        revision: main
         directories:
           - path: manifests/tools/*
   template:
@@ -16,8 +16,8 @@ spec:
     spec:
       project: "tools"
       source:
-        repoURL: git@github.com:matt328/bootstrap
-        targetRevision: kustomize
+        repoURL: https://github.com/matt328/bootstrap
+        targetRevision: main
         path: "{{path}}"
         plugin:
           name: kustomize-enable-helm
