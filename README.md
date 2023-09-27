@@ -26,7 +26,7 @@ and devops topics in general. The tools and technologies used include:
 1. Install k3s on the master node:
 
    ```sh
-   curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644 --token <pw> --node-taint CriticalAddonsOnly=true:NoExecute --bind-address <public IP address>
+   curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644 --token <pw> --node-taint CriticalAddonsOnly=true:NoExecute --bind-address <public IP address> --disable=traefik --disable=servicelb
    ```
 
 1. Get the kube config from the master to configure kubectl on another machine
