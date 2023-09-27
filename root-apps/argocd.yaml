@@ -24,22 +24,7 @@ spec:
   destinations:
     - namespace: "tools"
       server: https://kubernetes.default.svc
-    - namespace: "kube-system"
-      server: https://kubernetes.default.svc
-  clusterResourceWhitelist:
-    - group: "*"
-      kind: "*"
----
-apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: monitoring
-  namespace: argocd
-spec:
-  sourceRepos:
-    - "*"
-  destinations:
-    - namespace: "monitoring"
+    - namespace: "*"
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: "*"

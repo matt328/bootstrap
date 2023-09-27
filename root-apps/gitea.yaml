@@ -2,11 +2,11 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: gitea
-  namespace: gitea
+  namespace: argocd
 spec:
   project: default
   source:
-    repoURL: git@github.com:matt328/bootstrap
+    repoURL: https://github.com/matt328/bootstrap
     targetRevision: HEAD
     path: manifests/gitea
   destination:
