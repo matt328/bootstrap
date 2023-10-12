@@ -50,9 +50,6 @@ backend kube-apiserver
 
    ```sh
    curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644 --token <pw> --node-taint CriticalAddonsOnly=true:NoExecute --bind-address <public IP address> --disable=traefik --disable=servicelb
-   curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644 --token abbierose --node-taint CriticalAddonsOnly=true:NoExecute --bind-address 192.168.50.101 --disable=traefik --disable=servicelb
-   curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644 --token abbierose --node-taint CriticalAddonsOnly=true:NoExecute --bind-address 192.168.50.106 --server https://192.168.50.101:6443 --disable=traefik --disable=servicelb
-
    ```
 
 1. Get the kube config from the master to configure kubectl on another machine
@@ -65,7 +62,6 @@ backend kube-apiserver
 
    ```sh
    curl -sfL https://get.k3s.io | K3S_URL=https://<master node IP address>:6443 K3S_TOKEN=<pw> sh -
-   curl -sfL https://get.k3s.io | K3S_URL=https://192.168.50.101:6443 K3S_TOKEN=abbierose sh -
    ```
 
 1. (Optional) Label Nodes
