@@ -21,29 +21,6 @@ and devops topics in general. The tools and technologies used include:
 
 # Break Glass / Initial Setup
 
-## HAProxy/Keepalived
-
-`sudo apt install haproxy keepalived psmisc`
-
-```
-// Add to /etc/haproxy/haproxy.cfg on both proxy systems
-frontend kube-apiserver
-   bind *:6443
-   mode tcp
-   option tcplog
-   default_backend kube-apiserver
-
-backend kube-apiserver
-   mode tcp
-   option tcplog
-   option tcp-check
-   balance roundrobin
-   default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
-   server kube-apiserver-1 192.168.50.101:6443 check
-   server kube-apiserver-2 192.168.50.107:6443 check
-   server kube-apiserver-3 192.168.50.106:6443 check
-```
-
 ## k3s
 
 1. Install k3s on the master node:
