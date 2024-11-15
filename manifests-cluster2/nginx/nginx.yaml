@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: nginx-echo
-          image: nginxinc/nginx-hello:latest
+          image: nginxdemos/hello
           ports:
             - containerPort: 80
 ---
