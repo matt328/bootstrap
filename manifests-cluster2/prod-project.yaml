@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: prod
+  namespace: argocd
+spec:
+  sourceRepos:
+    - "*"
+  destinations:
+    - namespace: "prod"
+      server: https://192.168.50.113:6443
+    - namespace: "*"
+      server: https://192.168.50.113:6443
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
