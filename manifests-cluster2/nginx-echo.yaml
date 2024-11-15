@@ -6,9 +6,9 @@ metadata:
 spec:
   project: prod
   source:
-    repoURL: https://github.com/nginxinc/docker-nginx-hello
+    repoURL: https://github.com/matt328/bootstrap
     targetRevision: HEAD
-    path: ""
+    path: "manifests-cluster2/nginx"
   destination:
     server: https://192.168.50.113:6443
     namespace: prod
