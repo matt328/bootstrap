@@ -19,9 +19,9 @@ and devops topics in general. The tools and technologies used include:
 
 - Gitea - lightweight github clone, allows private, on prem hosting of git projects. A great exercise in deploying and maintaining an application that utilizes persistent storage with longhorn.
 
-# Break Glass / Initial Setup
+## Break Glass / Initial Setup
 
-## k3s
+### k3s
 
 1. Install k3s on the master node:
 
@@ -42,25 +42,30 @@ and devops topics in general. The tools and technologies used include:
    ```
 
 1. (Optional) Label Nodes
+
    ```sh
    kubectl label nodes <node-name> kubernetes.io/role=worker
    kubectl label nodes <node-name> node-type=worker
    ```
 
-## MetalLB
+### MetalLB
 
 1. Use kustomize to generate deployment yaml
+
    ```sh
    kubectl kustomize manifests/metallb >metallb-deployment.yaml
    ```
+
 1. Review generated yaml for correctness.
 1. Deploy into k3s:
+
    ```sh
    kubectl apply -f metallb-deployment.yaml
    ```
+
    With MetalLB controller deployed, we can now just deploy a kubernetes Service resource with the type of `Loadbalancer` and MetalLB will see to the service being mapped to an IP address from the defined pool.
 
-## Sealed Secrets Controller
+### Sealed Secrets Controller
 
 ```sh
 kubectl kustomize --enable-helm manifests/tools/sealed-secrets > sealed-secrets-deployment.yaml
@@ -68,16 +73,16 @@ kubectl kustomize --enable-helm manifests/tools/sealed-secrets > sealed-secrets-
 kubectl apply -f sealed-secrets-deployment.yaml
 ```
 
-## ArgoCD Bootstrap
+### ArgoCD Bootstrap
 
 This configuration is inspired by the ArgoCD docs themselves, particularly
 
-- https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#manage-argo-cd-using-argo-cd
-- https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/
+- <https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#manage-argo-cd-using-argo-cd>
+- <https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/>
 
 The `tools` group uses an ApplicationSet:
 
-- https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/
+- <https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/>
 
 The overall idea is to have everything that runs in kubernetes declaratively managed by ArgoCD, including ArgoCD itself, which presents a chicken and the egg situation: How does ArgoCD get installed in the first place? The `Break Glass` steps above illustrate step by step how to bootstrap a cluster, but the general idea is you have to install a few items manually, via `kubectl apply`, and once those are in place, you add their manifest directories as Projects inside of ArgoCD, and it will start to monitor them from there. From then on, to modify or update any of those applications and configurations, you simply push changes to the repository, and ArgoCD will sync them to the cluster. ArgoCD will deploy applications via the same mechanism, although to make roles and permissions management easier, applications developers deploy would be stored in a separate repository from the kubernetes infrastructure applications and configuration.
 
@@ -122,19 +127,22 @@ The overall idea is to have everything that runs in kubernetes declaratively man
 1. Install argo manually
    - Make sure the secret has been updated in the file `manifests/argocd/sealed-secret.yaml`
    - Apply the kustomized manifests:
+
      ```sh
      kubectl kustomize --enable-helm manifests/argocd >argocd-deployment.yaml
      # Verify yaml
      kubectl apply -f argocd-deployment.yaml
      ```
+
    - Verify all the ArgoCD pods have started up.
 1. Take over both sealed-secrets controller and ArgoCD by installing both the ArgoCD and Tools namespace root applications.
+
    ```sh
    kubectl apply -f root-apps/argocd.yaml
    kubectl apply -f root-apps/tools.yaml
    ```
 
-# Longhorn
+### Longhorn
 
 Longhorn is kind of a snowflake in my cluster since IMO it abuses helm hooks and ArgoCD has a tough time deploying it. Also, IMO Longhorn in general can't be deployed declaratively, it follows too closely a clickopsy maintenance paradigm reminiscient of the old InstallShield wizards back in the day. But, alas, it does provide application independent backup and restore of persistent volumes.
 
@@ -148,6 +156,21 @@ kubectl apply -f longhorn-deployment.yaml
 
 I currently have no idea what the upgrade process for Longhorn looks like since they really want you to just clickops it by installing and upgrading it with its helm chart, so we'll have to cross that bridge when we come to it. Watching k9s while longhorn is being 'installed' I really want to find a simpler way to backup persistent volumes
 
-# Maintain Tools
+## Maintain Tools
 
 Should be able to just push changes to the manifests repo(s) in order for things to update.
+
+## Deploy to External Cluster
+
+Use argocd cli to create a connection and configure the external cluster.
+
+```sh
+argocd login <argocd url> # use admin creds
+argocd cluster add <external cluster's context name in .kube/config>
+```
+
+Create a Project and ApplicationSet pointing to the external cluster
+
+Add applications.
+
+Profit.
