@@ -54,7 +54,7 @@ spec:
                 [
                   "sh",
                   "-c",
-                  "until nc -z argocd-argocd-repo-server 8081; do echo waiting for repo-server; sleep 2; done",
+                  "until nc -z argo-cd-argocd-repo-server 8081; do echo waiting for repo-server; sleep 2; done",
                 ]
               resources:
                 limits:
