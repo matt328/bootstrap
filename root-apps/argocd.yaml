@@ -28,6 +28,6 @@ spec:
   source:
     directory:
       recurse: true
-    path: deployments
+    path: applications
     repoURL: https://github.com/matt328/bootstrap.git
     targetRevision: HEAD
