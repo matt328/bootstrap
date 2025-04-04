@@ -55,7 +55,7 @@ spec:
                 - -c
                 - |
                   for i in $(seq 1 20); do
-                    curl -s --connect-timeout 2 http://argocd-argocd-repo-server:8081 && exit 0
+                    nc -z argo-cd-argocd-repo-server 8081 && exit 0
                     echo "Waiting for repo-server... ($i/20)"
                     sleep 2
                   done
