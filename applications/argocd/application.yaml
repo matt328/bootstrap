@@ -1,0 +1,62 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: argo-cd
+    repoURL: https://argoproj.github.io/argo-helm
+    targetRevision: 7.7.21
+    helm:
+      releaseName: argo-cd
+      values: |
+        global:
+          domain: 192.168.50.150
+        configs:
+          params:
+            server.insecure: true
+            applicationsetcontroller.enable.new.git.file.globbing: true
+            controller.log.level: "warn"
+            applicationsetcontroller.log.level: "warn"
+            server.log.level: "warn"
+            reposerver.log.level: "warn"
+            notificationscontroller.log.level: "warn"
+          cm:
+            kustomize.buildOptions: --enable-helm
+        server:
+          service:
+            type: ClusterIP
+        controller:
+          metrics:
+            enabled: true
+            service:
+              annotations:
+                prometheus.io/scrape: "true"
+                prometheus.io/port: "8082"
+            serviceMonitor:
+              enabled: true
+        repoServer:
+          metrics:
+            enabled: true
+            service:
+              annotations:
+                prometheus.io/scrape: "true"
+                prometheus.io/port: "8084"
+            serviceMonitor:
+              enabled: true
+        applicationSet:
+          metrics:
+            enabled: true
+            service:
+              annotations:
+                prometheus.io/scrape: "true"
+                prometheus.io/port: "8080"
+            serviceMonitor:
+              enabled: true
+        dex:
+          enabled: false
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: argocd
