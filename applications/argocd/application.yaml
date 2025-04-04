@@ -50,7 +50,15 @@ spec:
           initContainers:
             - name: wait-for-repo-server
               image: busybox
-              command: ['sh', '-c', 'until nc -z argocd-repo-server.argocd.svc.cluster.local 8081; do echo waiting for repo-server; sleep 2; done']
+              command: ['sh', '-c', '
+                for i in $(seq 1 20); do
+                  wget --spider --timeout=2 http://argo-cd-argocd-repo-server:8081 && exit 0
+                  echo "Waiting for repo-server... ($i/20)"
+                  sleep 2
+                done
+                echo "repo-server did not respond in time" >&2
+                exit 1
+              ']
               resources:
                 limits:
                   cpu: 100m
