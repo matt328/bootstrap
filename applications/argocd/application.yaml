@@ -50,7 +50,7 @@ spec:
           initContainers:
             - name: wait-for-repo-server
               image: busybox
-              command: ['sh', '-c', 'until nc -z repo-server.argocd.svc 8081; do echo waiting for repo-server; sleep 2; done']
+              command: ['sh', '-c', 'until nc -z argocd-repo-server.argocd.svc.cluster.local 8081; do echo waiting for repo-server; sleep 2; done']
               resources:
                 limits:
                   cpu: 100m
