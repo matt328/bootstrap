@@ -47,6 +47,18 @@ spec:
             serviceMonitor:
               enabled: true
         applicationSet:
+          controller:
+            initContainers:
+              - name: wait-for-repo-server
+                image: busybox
+                command: ['sh', '-c', 'until nc -z repo-server.argocd.svc 8081; do echo waiting for repo-server; sleep 2; done']
+                resources:
+                  limits:
+                    cpu: 100m
+                    memory: 128Mi
+                  requests:
+                    cpu: 50m
+                    memory: 64Mi
           metrics:
             enabled: true
             service:
