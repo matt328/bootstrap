@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: management
+  namespace: management
+spec:
+  description: "Management Namespace Project"
+  sourceRepos:
+    - "https://github.com/matt328/bootstrap.git"
+  destinations:
+    - name: "In-Cluster Management Namespace"
+      namespace: management
+      server: "https://kubernetes.default.svc"
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"

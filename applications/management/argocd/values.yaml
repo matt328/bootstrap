@@ -1,0 +1,62 @@
+redis-ha:
+  enabled: true
+configs:
+  params:
+    server.insecure: true
+    applicationsetcontroller.enable.new.git.file.globbing: true
+    controller.log.level: "warn"
+    applicationsetcontroller.log.level: "warn"
+    server.log.level: "warn"
+    reposerver.log.level: "warn"
+    notificationscontroller.log.level: "warn"
+  cm:
+    kustomize.buildOptions: --enable-helm
+    helm.oci.enabled: "true"
+server:
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+  service:
+    type: ClusterIP
+  metrics:
+    enabled: false
+    service:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8083"
+    serviceMonitor:
+      enabled: false
+controller:
+  replicas: 3
+  metrics:
+    enabled: false
+    service:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8082"
+    serviceMonitor:
+      enabled: false
+repoServer:
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+  metrics:
+    enabled: false
+    service:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8084"
+    serviceMonitor:
+      enabled: false
+applicationSet:
+  replicas: 3
+  metrics:
+    enabled: false
+    service:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+    serviceMonitor:
+      enabled: false
+dex:
+  enabled: false

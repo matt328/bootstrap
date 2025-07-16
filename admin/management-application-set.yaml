@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: management-applications
+  namespace: management
+spec:
+  goTemplate: true
+  generators:
+    - git:
+        repoURL: https://github.com/matt328/bootstrap.git
+        revision: main
+        directories:
+          - path: applications/management/*
+  template:
+    metadata:
+      name: "management-{{.path.basename}}"
+      namespace: management
+    spec:
+      project: management
+      source:
+        repoURL: https://github.com/matt328/bootstrap.git
+        targetRevision: main
+        path: "{{.path.path}}"
+      destination:
+        server: "https://kubernetes.default.svc"
+        namespace: management
+      ignoreDifferences:
+        - kind: ServiceAccount
+          namespace: applications
+          jsonPointers:
+            - /secrets
+      syncPolicy:
+        syncOptions:
+          - ApplyOutOfSyncOnly=true
+          - CreateNamespace=true
+          - FailOnSharedResource=true

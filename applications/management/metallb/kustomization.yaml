@@ -1,0 +1,6 @@
+# This kustomization will create the namespace for us. How about that, helm.
+namespace: management
+
+resources:
+  - https://github.com/metallb/metallb/config/native?ref=v0.15.2
+  - config-pool.yaml
