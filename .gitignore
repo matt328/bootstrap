@@ -2,3 +2,4 @@
 **/output.yaml
 **/charts/**/*
 **/testing/**/*.*
+**/deployment.yaml
