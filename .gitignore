@@ -3,3 +3,6 @@
 **/charts/**/*
 **/testing/**/*.*
 **/deployment.yaml
+node-token
+.vagrant-local.rb
+.vagrant
