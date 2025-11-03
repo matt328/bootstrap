@@ -1,8 +1,8 @@
 # Vagrantfile for k3s cluster (1 master + N agents)
 VAGRANT_EXPERIMENTAL = "typed_triggers"
 
-# --- Load local overrides (ignored by Git) ---
-local_config = File.join(File.dirname(__FILE__), ".vagrant-local.rb")
+local_file = ENV['VAGRANT_LOCAL'] || '.vagrant-local.rb'
+local_config = File.join(File.dirname(__FILE__), local_file)
 load local_config if File.exist?(local_config)
 
 Vagrant.configure("2") do |config|
