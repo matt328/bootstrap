@@ -1,0 +1,38 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/focal64"
+
+  # Network
+  config.vm.network "forwarded_port", guest: 5432, host: 5432
+
+  # Optional: static IP
+  config.vm.network "private_network", ip: "192.168.56.155"
+
+  # Provision Postgres
+  config.vm.provision "shell", inline: <<-SHELL
+    set -e
+
+    echo "[+] Updating apt..."
+    sudo apt-get update -y
+
+    echo "[+] Installing Postgres..."
+    sudo apt-get install -y postgresql postgresql-contrib
+
+    # Set up DB, user, password
+    DB_NAME="${DB_NAME:-mydb}"
+    DB_USER="${DB_USER:-myuser}"
+    DB_PASS="${DB_PASS:-mypassword}"
+
+    echo "[+] Configuring Postgres user and database..."
+    sudo -u postgres psql <<EOSQL
+      CREATE USER $DB_USER WITH PASSWORD '$DB_PASS';
+      CREATE DATABASE $DB_NAME OWNER $DB_USER;
+EOSQL
+
+    # Allow password authentication
+    sudo sed -i "s/^#listen_addresses =.*/listen_addresses = '*'/" /etc/postgresql/*/main/postgresql.conf
+    echo "host    all             all             0.0.0.0/0               md5" | sudo tee -a /etc/postgresql/*/main/pg_hba.conf
+
+    sudo systemctl restart postgresql
+    echo "[+] Postgres is ready!"
+  SHELL
+end
