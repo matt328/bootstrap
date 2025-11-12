@@ -5,7 +5,7 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 5432, host: 5432
 
   # Optional: static IP
-  config.vm.network "private_network", ip: "192.168.50.155", bridge: "Realtek PCIe GbE Family Controller"
+  config.vm.network "public_network", ip: "192.168.50.155", bridge: "Intel(R) Ethernet Connection (22) I219-LM"
 
   # Provision Postgres
   config.vm.provision "shell", inline: <<-SHELL
@@ -26,6 +26,7 @@ Vagrant.configure("2") do |config|
     sudo -u postgres psql <<EOSQL
       CREATE USER $DB_USER WITH PASSWORD '$DB_PASS';
       CREATE DATABASE $DB_NAME OWNER $DB_USER;
+      GRANT ALL PRIVILEGES ON DATABASE "$DB_NAME" TO "$DB_USER";
 EOSQL
 
     # Allow password authentication
