@@ -142,20 +142,6 @@ The overall idea is to have everything that runs in kubernetes declaratively man
    kubectl apply -f root-apps/tools.yaml
    ```
 
-### Longhorn
-
-Longhorn is kind of a snowflake in my cluster since IMO it abuses helm hooks and ArgoCD has a tough time deploying it. Also, IMO Longhorn in general can't be deployed declaratively, it follows too closely a clickopsy maintenance paradigm reminiscient of the old InstallShield wizards back in the day. But, alas, it does provide application independent backup and restore of persistent volumes.
-
-In order to install Longhorn, for now I'll run kustomize on it's folder and apply the generated yaml. Eventually I should just give in and `helm install` it manually like they want you to do.
-
-```sh
-kubectl kustomize --enable-helm manual-apps/longhorn >longhorn-deployment.yaml
-# Verify yaml
-kubectl apply -f longhorn-deployment.yaml
-```
-
-I currently have no idea what the upgrade process for Longhorn looks like since they really want you to just clickops it by installing and upgrading it with its helm chart, so we'll have to cross that bridge when we come to it. Watching k9s while longhorn is being 'installed' I really want to find a simpler way to backup persistent volumes
-
 ## Maintain Tools
 
 Should be able to just push changes to the manifests repo(s) in order for things to update.
