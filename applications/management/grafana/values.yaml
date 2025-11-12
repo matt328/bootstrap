@@ -115,8 +115,7 @@ image:
 
 # dns configuration for pod
 dnsPolicy: ~
-dnsConfig:
-  {}
+dnsConfig: {}
   # nameservers:
   #   - 8.8.8.8
   #   options:
@@ -156,8 +155,7 @@ extraConfigmapMounts:
   #   readOnly: true
   #   optional: false
 
-extraEmptyDirMounts:
-  []
+extraEmptyDirMounts: []
   # - name: provisioning-notifiers
   #   mountPath: /etc/grafana/provisioning/notifiers
 
@@ -250,15 +248,13 @@ serviceMonitor:
   basicAuth: {}
   targetLabels: []
 
-extraExposePorts:
-  []
+extraExposePorts: []
   # - name: keycloak
   #   port: 8080
   #   targetPort: 8080
 
 # overrides pod.spec.hostAliases in the grafana deployment's pods
-hostAliases:
-  []
+hostAliases: []
   # - ip: "1.2.3.4"
   #   hostnames:
   #     - "my.host.com"
@@ -269,8 +265,7 @@ ingress:
   # See https://kubernetes.io/blog/2020/04/02/improvements-to-the-ingress-api-in-kubernetes-1.18/#specifying-the-class-of-an-ingress
   # ingressClassName: nginx
   # Values can be templated
-  annotations:
-    {}
+  annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   labels: {}
@@ -523,7 +518,7 @@ admin:
 
 env:
   GF_DATABASE_TYPE: postgres
-  GF_DATABASE_HOST: 192.168.50.137:5432
+  GF_DATABASE_HOST: 192.168.50.155:5432
   GF_DATABASE_NAME: grafana
   GF_DATABASE_USER: grafana_user
   GF_DATABASE_PASSWORD: grafana_pass
@@ -536,8 +531,7 @@ env:
 ##     - name: <key>
 ##       valueFrom:
 ##         <value rendered as YAML>
-envValueFrom:
-  {}
+envValueFrom: {}
   #  ENV_NAME:
   #    configMapKeyRef:
   #      name: configmap-name
@@ -576,8 +570,7 @@ enableServiceLinks: true
 
 ## Additional grafana server secret mounts
 # Defines additional mounts with secrets. Secrets must be manually created in the namespace.
-extraSecretMounts:
-  []
+extraSecretMounts: []
   # - name: secret-files
   #   mountPath: /etc/secrets
   #   secretName: grafana-secret-files
@@ -611,8 +604,7 @@ extraSecretMounts:
 
 ## Additional grafana server volume mounts
 # Defines additional volume mounts.
-extraVolumeMounts:
-  []
+extraVolumeMounts: []
   # - name: extra-volume-0
   #   mountPath: /mnt/volume0
   #   readOnly: true
@@ -623,8 +615,7 @@ extraVolumeMounts:
   #   mountPath: /mnt/volume2
 
 ## Additional Grafana server volumes
-extraVolumes:
-  []
+extraVolumes: []
   # - name: extra-volume-0
   #   existingClaim: volume-claim
   # - name: extra-volume-1
@@ -639,16 +630,14 @@ extraVolumes:
   #       secretProviderClass: "grafana-env-spc"
 
 ## Container Lifecycle Hooks. Execute a specific bash command or make an HTTP request
-lifecycleHooks:
-  {}
+lifecycleHooks: {}
   # postStart:
   #   exec:
   #     command: []
 
 ## Pass the plugins you want installed as a list.
 ##
-plugins:
-  []
+plugins: []
   # - digrich-bubblechart-panel
   # - grafana-clock-panel
   ## You can also use other plugin download URL, as long as they are valid zip files,
@@ -681,8 +670,7 @@ datasources: {}
 ## Configure grafana alerting (can be templated)
 ## ref: https://docs.grafana.com/alerting/set-up/provision-alerting-resources/file-provisioning/
 ##
-alerting:
-  {}
+alerting: {}
   # policies.yaml:
   #   apiVersion: 1
   #   policies:
@@ -826,8 +814,7 @@ defaultCurlOptions: "-skf"
 ##
 ## dashboards per provider, use provider name as key.
 ##
-dashboards:
-  {}
+dashboards: {}
   # default:
   #   some-dashboard:
   #     json: |
@@ -1441,8 +1428,7 @@ imageRenderer:
   ##     - name: <key>
   ##       valueFrom:
   ##         <value rendered as YAML>
-  envValueFrom:
-    {}
+  envValueFrom: {}
     #  ENV_NAME:
     #    configMapKeyRef:
     #      name: configmap-name
@@ -1491,8 +1477,7 @@ imageRenderer:
     scrapeTimeout: 30s
     relabelings: []
     # See: https://doc.crds.dev/github.com/prometheus-operator/kube-prometheus/monitoring.coreos.com/ServiceMonitor/v1@v0.11.0#spec-targetLabels
-    targetLabels:
-      []
+    targetLabels: []
       # - targetLabel1
       # - targetLabel2
   # If https is enabled in Grafana, this needs to be set as 'https' to correctly configure the callback used in Grafana
