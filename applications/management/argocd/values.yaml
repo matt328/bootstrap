@@ -1,5 +1,5 @@
 redis-ha:
-  enabled: true
+  enabled: false
 configs:
   params:
     server.insecure: true
