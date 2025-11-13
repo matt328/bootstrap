@@ -2,13 +2,18 @@ Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/focal64"
 
   # Network
-  config.vm.network "forwarded_port", guest: 5432, host: 5432
-
+  
   # Optional: static IP
   config.vm.network "public_network", ip: "192.168.50.155", bridge: "Intel(R) Ethernet Connection (22) I219-LM"
 
   # Provision Postgres
-  config.vm.provision "shell", inline: <<-SHELL
+  config.vm.provision "shell",
+  env: {
+    "DB_NAME" => ENV["DB_NAME"] || "mydb",
+    "DB_USER" => ENV["DB_USER"] || "myuser",
+    "DB_PASS" => ENV["DB_PASS"] || "mypassword"
+  },
+  inline: <<-SHELL
     set -e
 
     echo "[+] Updating apt..."
@@ -23,12 +28,13 @@ Vagrant.configure("2") do |config|
     DB_PASS="${DB_PASS:-mypassword}"
 
     echo "[+] Configuring Postgres user and database..."
+    echo "DB_USER=$DB_USER DB_PASS=$DB_PASS"
     sudo -u postgres psql <<EOSQL
       CREATE USER $DB_USER WITH PASSWORD '$DB_PASS';
-      ALTER USER "$DB_USER" SET search_path TO public;
+      ALTER USER $DB_USER SET search_path TO public;
       CREATE DATABASE $DB_NAME OWNER $DB_USER;
-      GRANT ALL PRIVILEGES ON DATABASE "$DB_NAME" TO "$DB_USER";
-      ALTER USER "$DB_USER" WITH SUPERUSER;
+      GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;
+      ALTER USER $DB_USER WITH SUPERUSER;
 EOSQL
 
     # Allow password authentication
