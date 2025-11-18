@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+spec:
+  sources:
+    - repoURL: oci://ghcr.io/psu-pennstateit-swe/charts
+      chart: eio-swe-service
+      targetRevision: 2.7.3
+      helm:
+        valueFiles:
+          - $values/demo-payment-service/values.yaml
+    - repoURL: https://github.com/matt328/bootstrap.git
+      targetRevision: main
+      path: applications/base/
+      ref: values

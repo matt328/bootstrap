@@ -62,7 +62,7 @@ loki.source.kubernetes "pod_logs" {
 loki.process "pod_logs" {
   stage.static_labels {
       values = {
-        cluster = "january",
+        cluster = "thessia",
       }
   }
 
