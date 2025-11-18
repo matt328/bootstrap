@@ -2,7 +2,7 @@ appName: demo-payment-service
 image:
   repository: ghcr.io/psu-pennstateit-swe/demo-payment-service
   tag: 91d1344745d1d8984e21da200a80f0963bec22d7
-  pullSecrets: ghcr
+  pullSecrets: ghcr-secret
 ingress:
   hosts:
     - demo-payment-service.local
