@@ -16,3 +16,5 @@ serviceMonitor:
   enabled: false
 oathkeeper:
   enabled: false
+certificates:
+  enabled: false

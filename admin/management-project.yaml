@@ -6,7 +6,8 @@ metadata:
 spec:
   description: "Management Namespace Project"
   sourceRepos:
-    - "https://github.com/matt328/bootstrap.git"
+    - https://github.com/matt328/bootstrap.git
+    - ghcr.io/psu-pennstateit-swe/charts
   destinations:
     - name: "In-Cluster Management Namespace"
       namespace: management

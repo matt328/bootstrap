@@ -1,14 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
+metadata:
+  name: demo-payment-service-application
+  namespace: management
 spec:
+  project: management
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: management
   sources:
-    - repoURL: oci://ghcr.io/psu-pennstateit-swe/charts
+    - repoURL: ghcr.io/psu-pennstateit-swe/charts
       chart: eio-swe-service
       targetRevision: 2.7.3
       helm:
         valueFiles:
-          - $values/demo-payment-service/values.yaml
+          - $values/applications/base/demo-payment-service/values.yaml
     - repoURL: https://github.com/matt328/bootstrap.git
       targetRevision: main
-      path: applications/base/
       ref: values
