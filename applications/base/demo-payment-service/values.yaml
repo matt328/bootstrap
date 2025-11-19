@@ -6,15 +6,18 @@ image:
 ingress:
   enabled: false
 
-livenessProbe:
-  enabled: true
-livenessProbePath: /actuator/health/liveness
-livenessProbePort: 8080
-
 readinessProbe:
   enabled: true
+  initialDelaySeconds: 5
+  periodSeconds: 5
 readinessProbePath: /actuator/health/readiness
 readinessProbePort: 8080
+
+livenessProbe:
+  enabled: true
+  periodSeconds: 30
+livenessProbePath: /actuator/health/liveness
+livenessProbePort: 8080
 
 javaParams: null
 
