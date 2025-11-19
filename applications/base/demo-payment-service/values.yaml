@@ -4,10 +4,8 @@ image:
   tag: 88252299c39d40973bbcd16f4e6c6972b3beade8
   pullSecrets: ghcr-secret
 ingress:
-  hosts:
-    - demo-payment-service.local
-  paths:
-    - /
+  enabled: false
+
 livenessProbe:
   enabled: true
 livenessProbePath: /actuator/health/liveness
