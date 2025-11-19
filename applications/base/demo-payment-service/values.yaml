@@ -18,6 +18,8 @@ readinessProbe:
 readinessProbePath: /actuator/health/readiness
 readinessProbePort: 8080
 
+javaParams: null
+
 linkerd:
   enabled: false
 serviceProfile:
