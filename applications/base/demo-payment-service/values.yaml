@@ -8,6 +8,14 @@ ingress:
     - demo-payment-service.local
   paths:
     - /
+livenessProbe:
+  httpGet:
+    path: /actuator/health/liveness
+    port: 8080
+readinessProbe:
+  httpGet:
+    path: /actuator/health/readiness
+    port: 8080
 linkerd:
   enabled: false
 serviceProfile:
