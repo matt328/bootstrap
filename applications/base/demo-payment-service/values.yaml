@@ -3,39 +3,3 @@ image:
   repository: ghcr.io/psu-pennstateit-swe/demo-payment-service
   tag: 88252299c39d40973bbcd16f4e6c6972b3beade8
   pullSecrets: ghcr-secret
-ingress:
-  enabled: false
-
-readinessProbe:
-  enabled: true
-  initialDelaySeconds: 5
-  periodSeconds: 5
-readinessProbePath: /actuator/health/readiness
-readinessProbePort: 8080
-
-livenessProbe:
-  enabled: true
-  periodSeconds: 30
-livenessProbePath: /actuator/health/liveness
-livenessProbePort: 8080
-
-javaParams: null
-
-resources:
-  requests:
-    cpu: 250m
-    memory: 512Mi
-  limits:
-    cpu: 1
-    memory: 1Gi
-
-linkerd:
-  enabled: false
-serviceProfile:
-  enabled: false
-serviceMonitor:
-  enabled: false
-oathkeeper:
-  enabled: false
-certificates:
-  enabled: false

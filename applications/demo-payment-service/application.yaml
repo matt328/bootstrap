@@ -10,8 +10,8 @@ spec:
     namespace: management
   sources:
     - repoURL: ghcr.io/psu-pennstateit-swe/charts
-      chart: eio-swe-service
-      targetRevision: 2.7.3
+      chart: spring-boot
+      targetRevision: 1.0.0
       helm:
         valueFiles:
           - $values/applications/base/demo-payment-service/values.yaml
