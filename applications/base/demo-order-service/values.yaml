@@ -1,0 +1,14 @@
+appName: demo-order-service-base
+image:
+  repository: ghcr.io/psu-pennstateit-swe/demo-payment-service
+  tag: eb60aab394172d651b4a190b03b075e605b0a9b1
+imagePullSecrets:
+  - name: ghcr-secret
+livenessProbe:
+  httpGet:
+    path: /actuator/health/liveness
+    port: 8080
+readinessProbe:
+  httpGet:
+    path: /actuator/health/readiness
+    port: 8080
