@@ -9,7 +9,7 @@ spec:
         repoURL: https://github.com/matt328/bootstrap.git
         revision: main
         directories:
-          - path: applications/*/*/*
+          - path: applications/overlays/*/*
 
   template:
     metadata:
