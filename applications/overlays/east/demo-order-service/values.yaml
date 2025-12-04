@@ -1,0 +1,3 @@
+image:
+  repository: ghcr.io/psu-pennstateit-swe/demo-payment-service
+  tag: 9f73c48d6b249fa96a96693a03b426012d2d2102
