@@ -4,16 +4,17 @@ metadata:
   name: spring-boot-services
   namespace: management
 spec:
+  goTemplate: true
   generators:
     - git:
         repoURL: https://github.com/matt328/bootstrap.git
         revision: main
         directories:
-          - path: applications/overlays/*/*
+          - path: applications/*/*/*
 
   template:
     metadata:
-      name: "{{path.basename}}-application"
+      name: "{{index .path.segments 3}}-{{index .path.segments 2}}"
       namespace: management
     spec:
       project: management
@@ -28,4 +29,8 @@ spec:
           targetRevision: 1.0.0
           helm:
             valueFiles:
-              - values.yaml
+              - $values/base/{{.path.basename}}/values.yaml
+              - $values/{{.path}}/values.yaml
+        - repoURL: https://github.com/matt328/bootstrap.git
+          targetRevision: main
+          ref: values
