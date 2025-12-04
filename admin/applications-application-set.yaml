@@ -30,7 +30,7 @@ spec:
           helm:
             valueFiles:
               - $values/base/{{.path.basename}}/values.yaml
-              - $values/{{.path}}/values.yaml
+              - $values/{{.path.path}}/values.yaml
         - repoURL: https://github.com/matt328/bootstrap.git
           targetRevision: main
           ref: values
